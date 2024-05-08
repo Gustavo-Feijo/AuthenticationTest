@@ -11,8 +11,10 @@ const signInSchema = z.object({
   password: z.string().min(8),
 });
 
+//Authentication handlers.
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
+    //Credentials provider that receives only a email and plain text password.
     Credentials({
       credentials: {
         email: {},
@@ -21,15 +23,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       authorize: async (credentials) => {
         try {
           let user = null;
+          //Verify if the email and password match the signInSchema from Zod.
           const { email, password } = await signInSchema.parseAsync(
             credentials
           );
 
+          //Get the email from the database with prisma.
           user = await prisma.user.findUnique({ where: { email: email } });
           if (!user) {
             return null;
           }
+          //If the user exists, compare it's hashed password with the plaint text password.
           if (await bcrypt.compare(password, user.password)) {
+            //If it matches, then the right password was inserted.
+            //Removes the password from the response and returns the user object.
             const { password, ...cleanUser } = user;
             return cleanUser;
           } else {
@@ -41,5 +48,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
-  pages: { signIn: "/auth/signin", error: "/auth/error" },
+  //Custom pag for signIn.
+  pages: { signIn: "/auth/signin" },
 });

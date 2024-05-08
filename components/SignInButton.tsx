@@ -1,6 +1,7 @@
 "use client";
 import { signIn } from "next-auth/react";
 
+//Simple signin button for redirecting to the login page.
 function SignInButton() {
   return (
     <button

@@ -34,6 +34,7 @@ export async function POST(request: Request) {
       return Response.json({ error: "Missing parameters" }, { status: 400 });
     }
 
+    //Treat the request with the zod schema, them call the function for hashing and storing.
     const treatedReq = userSchema.parse(req);
     await hashAndStore(treatedReq.email, treatedReq.password);
 
@@ -42,6 +43,7 @@ export async function POST(request: Request) {
       { status: 201 }
     );
   } catch (err: any) {
+    //Verify if a error is a invalid input from Zod or the email unique key already exists.
     if (err instanceof z.ZodError) {
       return Response.json(
         { error: "Invalid input: " + err.message },

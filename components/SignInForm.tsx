@@ -1,6 +1,5 @@
 "use client";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import PasswordInput from "@/components/PasswordInput";
@@ -15,6 +14,7 @@ const signInSchema = z.object({
 type Props = { error?: string };
 type SignIn = z.infer<typeof signInSchema>;
 
+//
 function SignInForm(props: Props) {
   const {
     register,
@@ -42,14 +42,14 @@ function SignInForm(props: Props) {
           !!props.error && "bg-red-400"
         }`}
       >
-        {!!props.error && "Authentication failed"}
+        {!!props.error && "Authentication failed!"}
       </div>
       <h1 className="text-5xl text-slate-900 font-extrabold">Sign In</h1>
       <div className="flex flex-col  w-full items-center text-slate-900">
         <EmailInput register={register("email")} />
       </div>
       <p className=" h-2 text-black">
-        {(errors.email || errors.password) && "Credenciais inválidas."}
+        {(errors.email || errors.password) && "Invalid credentials."}
       </p>
 
       <div className="flex flex-col  w-full items-center text-slate-900">

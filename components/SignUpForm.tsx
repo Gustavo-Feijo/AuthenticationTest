@@ -14,6 +14,7 @@ const signUpSchema = z.object({
 
 type SignUp = z.infer<typeof signUpSchema>;
 
+//Simple signUp schema with Zod and React-Hook-Form.
 function SignUpForm() {
   const {
     register,
